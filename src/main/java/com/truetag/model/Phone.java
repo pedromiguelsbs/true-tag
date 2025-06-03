@@ -1,21 +1,23 @@
 package com.truetag.model;
 
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+
+@Entity
+@DiscriminatorValue("Telefone")
+@Table(name = "contatos")
+@NoArgsConstructor
 public class Phone extends Contact {
 
     private String number;
+
+    @Enumerated(EnumType.STRING)
     private PhoneType type;
 
-    public Phone(String number, boolean authentic) {
+    public Phone(String number, Boolean authentic) {
         super(authentic);
         this.number = number;
         this.type = identifyType(number);
-    }
-
-    public String getNumber() {
-        return number;
-    }
-    public PhoneType getType() {
-        return type;
     }
 
     private PhoneType identifyType(String number) {
@@ -28,33 +30,6 @@ public class Phone extends Contact {
         } else {
             return PhoneType.DESCONHECIDO;
         }
-    }
-
-    public String formattedNumber() {
-        switch (getType()) {
-            case FIXO:
-                return String.format("(%s) %s-%s",
-                        number.substring(0,2),
-                        number.substring(2,6),
-                        number.substring(6));
-            case CELULAR:
-                return String.format("(%s) %s-%s",
-                        number.substring(0,2),
-                        number.substring(2,7),
-                        number.substring(7));
-            case ESPECIAL:
-                return String.format("%s %s %s",
-                        number.substring(0,4),
-                        number.substring(4,7),
-                        number.substring(7));
-            default:
-                return number;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return (authentic ? "✅" : "❌") + " " + type + " - " + formattedNumber();
     }
 
 }

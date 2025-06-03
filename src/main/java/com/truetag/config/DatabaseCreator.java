@@ -17,11 +17,11 @@ public class DatabaseCreator {
         String username = dotenv.get("DB_USERNAME");
         String password = dotenv.get("DB_PASSWORD");
 
+
         String url = String.format("jdbc:mysql://%s:%s/?user=%s&password=%s", host, port, username, password);
 
         try (Connection conn = DriverManager.getConnection(url); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS truetagdb");
-            System.out.println("Banco de dados 'truetagdb' criado com sucesso!");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao criar o banco de dados.", e);
